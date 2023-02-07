@@ -22,27 +22,12 @@ doctype_js = {
     "Address": "gst_india/client_scripts/address.js",
     "Company": "gst_india/client_scripts/company.js",
     "Customer": "gst_india/client_scripts/customer.js",
-    "Delivery Note": [
-        "gst_india/client_scripts/e_waybill_actions.js",
-        "gst_india/client_scripts/delivery_note.js",
-    ],
     "Item": "gst_india/client_scripts/item.js",
     "Journal Entry": "gst_india/client_scripts/journal_entry.js",
     "Payment Entry": "gst_india/client_scripts/payment_entry.js",
-    "Sales Invoice": [
-        "gst_india/client_scripts/e_invoice_actions.js",
-        "gst_india/client_scripts/e_waybill_actions.js",
-        "gst_india/client_scripts/sales_invoice.js",
-    ],
     "Supplier": "gst_india/client_scripts/supplier.js",
 }
 
-doctype_list_js = {
-    "Sales Invoice": [
-        "gst_india/client_scripts/e_waybill_actions.js",
-        "gst_india/client_scripts/sales_invoice_list.js",
-    ]
-}
 
 doc_events = {
     "Address": {
@@ -66,7 +51,6 @@ doc_events = {
         ),
     },
     "Delivery Note": {
-        "onload": "india_compliance.gst_india.overrides.delivery_note.onload",
         "validate": (
             "india_compliance.gst_india.overrides.transaction.validate_transaction"
         ),
@@ -89,11 +73,6 @@ doc_events = {
         "validate": (
             "india_compliance.gst_india.overrides.transaction.validate_transaction"
         ),
-    },
-    "Sales Invoice": {
-        "onload": "india_compliance.gst_india.overrides.sales_invoice.onload",
-        "validate": "india_compliance.gst_india.overrides.sales_invoice.validate",
-        "on_submit": "india_compliance.gst_india.overrides.sales_invoice.on_submit",
     },
     "Sales Order": {
         "validate": (
@@ -148,8 +127,6 @@ jinja = {
         "india_compliance.gst_india.utils.jinja.add_spacing",
         "india_compliance.gst_india.utils.jinja.get_supply_type",
         "india_compliance.gst_india.utils.jinja.get_sub_supply_type",
-        "india_compliance.gst_india.utils.jinja.get_e_waybill_qr_code",
-        "india_compliance.gst_india.utils.jinja.get_qr_code",
         "india_compliance.gst_india.utils.jinja.get_transport_type",
         "india_compliance.gst_india.utils.jinja.get_transport_mode",
         "india_compliance.gst_india.utils.jinja.get_ewaybill_barcode",
@@ -171,7 +148,6 @@ override_doctype_dashboards = {
 company_data_to_be_ignored = ["GST Account", "GST Credential"]
 
 # Links to these doctypes will be ignored when deleting a document
-ignore_links_on_delete = ["e-Waybill Log", "e-Invoice Log"]
 
 
 # Includes in <head>

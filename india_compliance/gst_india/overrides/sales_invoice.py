@@ -1,10 +1,10 @@
 import frappe
 from frappe import _, bold
 
-from india_compliance.gst_india.constants import GST_INVOICE_NUMBER_FORMAT
-from india_compliance.gst_india.overrides.transaction import validate_transaction
-from india_compliance.gst_india.utils import is_api_enabled
-from india_compliance.gst_india.utils.e_invoice import validate_e_invoice_applicability
+from adaquare.adaquare.constants import GST_INVOICE_NUMBER_FORMAT
+from adaquare.adaquare.overrides.transaction import validate_transaction
+from adaquare.adaquare.utils import is_api_enabled
+from adaquare.adaquare.utils.e_invoice import validate_e_invoice_applicability
 
 
 def onload(doc, method=None):
@@ -112,7 +112,7 @@ def on_submit(doc, method=None):
         and gst_settings.auto_generate_e_invoice
     ):
         frappe.enqueue(
-            "india_compliance.gst_india.utils.e_invoice.generate_e_invoice",
+            "adaquare.adaquare.utils.e_invoice.generate_e_invoice",
             enqueue_after_commit=True,
             queue="short",
             docname=doc.name,
@@ -139,7 +139,7 @@ def on_submit(doc, method=None):
         return
 
     frappe.enqueue(
-        "india_compliance.gst_india.utils.e_waybill.generate_e_waybill",
+        "adaquare.adaquare.utils.e_waybill.generate_e_waybill",
         enqueue_after_commit=True,
         queue="short",
         doctype=doc.doctype,
@@ -197,7 +197,7 @@ def generate_e_invoice(docnames):
             continue
 
         frappe.enqueue(
-            "india_compliance.gst_india.utils.e_invoice.generate_e_invoice",
+            "adaquare.adaquare.utils.e_invoice.generate_e_invoice",
             queue="short",
             docname=doc.name,
             throw=False,
