@@ -1,10 +1,10 @@
 import frappe
 from frappe import _, bold
 
-from adaquare.adaquare.constants import GST_INVOICE_NUMBER_FORMAT
-from adaquare.adaquare.overrides.transaction import validate_transaction
-from adaquare.adaquare.utils import is_api_enabled
-from adaquare.adaquare.utils.e_invoice import validate_e_invoice_applicability
+from india_compliance.gst_india.constants import GST_INVOICE_NUMBER_FORMAT
+from india_compliance.gst_india.overrides.transaction import validate_transaction
+from india_compliance.gst_india.utils import is_api_enabled
+# from india_compliance.gst_india.utils.e_invoice import validate_e_invoice_applicability
 
 
 def onload(doc, method=None):
@@ -49,7 +49,7 @@ def validate(doc, method=None):
         return
 
     validate_invoice_number(doc)
-    validate_fields_and_set_status_for_e_invoice(doc)
+    # validate_fields_and_set_status_for_e_invoice(doc)
     validate_billing_address_gstin(doc)
 
 
@@ -107,17 +107,17 @@ def on_submit(doc, method=None):
     if not is_api_enabled(gst_settings):
         return
 
-    if (
-        validate_e_invoice_applicability(doc, gst_settings, throw=False)
-        and gst_settings.auto_generate_e_invoice
-    ):
-        frappe.enqueue(
-            "adaquare.adaquare.utils.e_invoice.generate_e_invoice",
-            enqueue_after_commit=True,
-            queue="short",
-            docname=doc.name,
-            throw=False,
-        )
+    # if (
+    #     validate_e_invoice_applicability(doc, gst_settings, throw=False)
+    #     and gst_settings.auto_generate_e_invoice
+    # ):
+    #     frappe.enqueue(
+    #         "india_compliance.gst_india.utils.e_invoice.generate_e_invoice",
+    #         enqueue_after_commit=True,
+    #         queue="short",
+    #         docname=doc.name,
+    #         throw=False,
+    #     )
 
         return
 
@@ -138,13 +138,13 @@ def on_submit(doc, method=None):
     ):
         return
 
-    frappe.enqueue(
-        "adaquare.adaquare.utils.e_waybill.generate_e_waybill",
-        enqueue_after_commit=True,
-        queue="short",
-        doctype=doc.doctype,
-        docname=doc.name,
-    )
+    # frappe.enqueue(
+    #     "india_compliance.gst_india.utils.e_waybill.generate_e_waybill",
+    #     enqueue_after_commit=True,
+    #     queue="short",
+    #     doctype=doc.doctype,
+    #     docname=doc.name,
+    # )
 
 
 def get_dashboard_data(data):
@@ -178,27 +178,27 @@ def update_dashboard_with_gst_logs(doctype, data, *log_doctypes):
     return data
 
 
-@frappe.whitelist()
-def generate_e_invoice(docnames):
-    """
-    Bulk generate e-Invoices for the given Sales Invoices.
-    Permission checks are done in the `generate_e_invoice` function.
-    """
-    gst_settings = frappe.get_cached_doc("GST Settings")
-    if not is_api_enabled(gst_settings):
-        return
+# @frappe.whitelist()
+# def generate_e_invoice(docnames):
+#     """
+#     Bulk generate e-Invoices for the given Sales Invoices.
+#     Permission checks are done in the `generate_e_invoice` function.
+#     """
+#     gst_settings = frappe.get_cached_doc("GST Settings")
+#     if not is_api_enabled(gst_settings):
+#         return
 
-    docnames = frappe.parse_json(docnames) if docnames.startswith("[") else [docnames]
-    for doc in docnames:
-        doc = frappe.get_doc("Sales Invoice", doc)
-        if doc.docstatus != 1 or not validate_e_invoice_applicability(
-            doc, gst_settings, throw=False
-        ):
-            continue
+#     docnames = frappe.parse_json(docnames) if docnames.startswith("[") else [docnames]
+#     for doc in docnames:
+#         doc = frappe.get_doc("Sales Invoice", doc)
+#         if doc.docstatus != 1 or not validate_e_invoice_applicability(
+#             doc, gst_settings, throw=False
+#         ):
+#             continue
 
-        frappe.enqueue(
-            "adaquare.adaquare.utils.e_invoice.generate_e_invoice",
-            queue="short",
-            docname=doc.name,
-            throw=False,
-        )
+#         frappe.enqueue(
+#             "india_compliance.gst_india.utils.e_invoice.generate_e_invoice",
+#             queue="short",
+#             docname=doc.name,
+#             throw=False,
+#         )

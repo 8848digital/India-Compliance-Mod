@@ -1,9 +1,9 @@
 import frappe
 
-from adaquare.adaquare.overrides.sales_invoice import (
+from india_compliance.gst_india.overrides.sales_invoice import (
     update_dashboard_with_gst_logs,
 )
-from adaquare.adaquare.utils import is_api_enabled
+from india_compliance.gst_india.utils import is_api_enabled
 
 
 def onload(doc, method=None):
