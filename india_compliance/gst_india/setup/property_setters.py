@@ -46,12 +46,6 @@ def get_property_setters():
             ),
         },
         {
-            "doctype": "e-Waybill Log",
-            "doctype_or_field": "DocType",
-            "property": "default_print_format",
-            "value": "e-Waybill",
-        },
-        {
             "doctype": "Address",
             "doctype_or_field": "DocType",
             "property": "quick_entry",

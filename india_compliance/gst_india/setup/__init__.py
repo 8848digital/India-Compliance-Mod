@@ -8,8 +8,6 @@ from frappe.utils import now_datetime, nowdate
 
 from india_compliance.gst_india.constants.custom_fields import (
     CUSTOM_FIELDS,
-    E_INVOICE_FIELDS,
-    E_WAYBILL_FIELDS,
     SALES_REVERSE_CHARGE_FIELDS,
 )
 from india_compliance.gst_india.setup.property_setters import get_property_setters
@@ -45,8 +43,6 @@ def create_custom_fields():
         _get_custom_fields_map(
             CUSTOM_FIELDS,
             SALES_REVERSE_CHARGE_FIELDS,
-            E_INVOICE_FIELDS,
-            E_WAYBILL_FIELDS,
         ),
         ignore_validate=True,
     )
@@ -62,8 +58,6 @@ def delete_custom_fields():
         _get_custom_fields_map(
             CUSTOM_FIELDS,
             SALES_REVERSE_CHARGE_FIELDS,
-            E_INVOICE_FIELDS,
-            E_WAYBILL_FIELDS,
         )
     )
 
@@ -166,8 +160,8 @@ def set_default_gst_settings():
     settings.db_set(default_settings)
 
     # Hide the fields as not enabled by default
-    for fields in (E_INVOICE_FIELDS, SALES_REVERSE_CHARGE_FIELDS):
-        toggle_custom_fields(fields, False)
+    # for fields in (SALES_REVERSE_CHARGE_FIELDS):
+    #     toggle_custom_fields(fields, False)
 
 
 def set_default_accounts_settings():
